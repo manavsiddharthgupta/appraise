@@ -13,7 +13,7 @@ import { MessageCircle } from 'lucide-react'
 
 const Dashboard = () => {
   return (
-    <main className='sm:px-20 px-4 sm:py-16 py-4 max-w-7xl mx-auto'>
+    <main className='sm:px-20 px-4 sm:pt-16 pt-4 max-w-7xl mx-auto'>
       <div className='w-full sm:flex flex-row gap-10'>
         <Card className='sm:w-[350px] w-full h-fit'>
           <CardHeader>
@@ -25,17 +25,18 @@ const Dashboard = () => {
               <div className='grid w-full items-center gap-4'>
                 <div className='flex flex-col space-y-1.5'>
                   <Label htmlFor='startup-name'>Startup/website Name</Label>
+                  <Input id='startup-name' placeholder='Appraise' />
+                </div>
+                <div className='flex flex-col space-y-1.5'>
+                  <Label htmlFor='startup-desc'>Tagline</Label>
                   <Input
-                    id='startup-name'
-                    placeholder='Name of your startup/website'
+                    id='startup-desc'
+                    placeholder='Build what users wants'
                   />
                 </div>
                 <div className='flex flex-col space-y-1.5'>
                   <Label htmlFor='startup-link'>Link</Label>
-                  <Input
-                    id='startup-link'
-                    placeholder='Link your startup/website'
-                  />
+                  <Input id='startup-link' placeholder='appraise.in' />
                 </div>
                 <div className='flex flex-col space-y-1.5'>
                   <Label htmlFor='startup-logo'>Logo</Label>

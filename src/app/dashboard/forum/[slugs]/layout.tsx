@@ -1,11 +1,11 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'dashboard | appraise',
-  description: 'Create forums for your startups or websites'
+  title: 'forums | appraise',
+  description: 'Build what users really want.'
 }
 
-export default function DashboardLayout({
+export default function ForumsLayout({
   children
 }: {
   children: React.ReactNode

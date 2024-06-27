@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { ModeToggle } from '@/components/theme-toggle'
-import { CreditCard, LayoutDashboard, LogOut, User } from 'lucide-react'
+import { CreditCard, LayoutDashboard, LogOut, Rocket, User } from 'lucide-react'
 import { useSession, signOut } from 'next-auth/react'
 import {
   DropdownMenu,
@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
+import { toast } from 'sonner'
 import { Session } from 'next-auth'
 import Link from 'next/link'
 
@@ -69,12 +70,25 @@ export function AccountMenu({ session }: { session: Session }) {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() =>
+              toast('Feature Coming Soon', {
+                description: 'We are working hard to bring you this feature.'
+              })
+            }
+          >
             <User className='mr-2 h-4 w-4' />
             <span>Profile</span>
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() =>
+              toast('Billing Update', {
+                description:
+                  'Our current features are free, but premium features will be available soon.'
+              })
+            }
+          >
             <CreditCard className='mr-2 h-4 w-4' />
             <span>Billing</span>
             <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>

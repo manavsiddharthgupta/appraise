@@ -2,6 +2,7 @@
 import { SessionProvider } from 'next-auth/react'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Inter } from 'next/font/google'
+import { Toaster } from '@/components/ui/sonner'
 import Navbar from '@/components/navbar'
 import { usePathname } from 'next/navigation'
 
@@ -21,6 +22,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
         >
           {pathname !== '/auth/signin' ? <Navbar /> : ''}
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </SessionProvider>
