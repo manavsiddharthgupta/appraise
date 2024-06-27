@@ -20,7 +20,11 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
           enableSystem
           disableTransitionOnChange
         >
-          {pathname !== '/auth/signin' ? <Navbar /> : ''}
+          {pathname !== '/auth/signin' && !pathname.startsWith('/f') ? (
+            <Navbar />
+          ) : (
+            ''
+          )}
           {children}
           <Toaster />
         </ThemeProvider>

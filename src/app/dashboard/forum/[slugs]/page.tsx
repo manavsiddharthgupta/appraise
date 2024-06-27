@@ -10,7 +10,11 @@ import { Label } from '@/components/ui/label'
 import { Copy, ExternalLink, LinkIcon } from 'lucide-react'
 import Link from 'next/link'
 
-export default function Page({ params }: { params: { slugs: string } }) {
+export default function ForumDashboardPage({
+  params
+}: {
+  params: { slugs: string }
+}) {
   return (
     <main className='sm:px-20 px-4 sm:pt-16 pt-4 max-w-7xl mx-auto'>
       <div className='md:flex flex-row gap-12'>
@@ -36,6 +40,7 @@ export default function Page({ params }: { params: { slugs: string } }) {
                 className='flex gap-1 items-center'
                 href='https://ence.in'
                 as='https://ence.in'
+                target='_blank'
               >
                 <LinkIcon size={12} strokeWidth={3} />
                 <span className='text-muted-foreground'>Link</span>
@@ -69,6 +74,7 @@ export default function Page({ params }: { params: { slugs: string } }) {
           <p className='text-sm text-muted-foreground text-center'>
             No posts yet. Share your Forum with the world.
           </p>
+          {/* <div className='block w-full p-6 border border-border rounded-xl shadow-[0_0px_0px_1px_rgba(0,0,0,0.05)]'></div> */}
         </div>
       </div>
     </main>
