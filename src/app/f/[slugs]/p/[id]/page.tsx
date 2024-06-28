@@ -6,7 +6,7 @@ import BackBtn from '@/components/back-btn'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 type Props = {
-  params: { id: string }
+  params: { id: string; slugs: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
@@ -16,23 +16,24 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   // read route params
   const id = params.id
+  const slug = params.slugs
 
   // fetch data
 
   // optionally access and extend (rather than replace) parent metadata
 
   return {
-    title: id,
+    title: id + ' | ' + slug,
     description: 'Suggest a feature that you want.'
   }
 }
 
-const PostsPage = ({ params }: { params: { id: string } }) => {
+const PostsPage = ({ params }: { params: { id: string; slugs: string } }) => {
   return (
     <main className='sm:px-20 px-4 sm:pt-16 pt-4 max-w-7xl mx-auto'>
       <div className='flex gap-4 items-center'>
         <BackBtn variant='secondary' icon={<Undo2 size={20} />} />
-        <h1 className='capitalize font-semibold text-2xl'>Ence</h1>
+        <h1 className='capitalize font-semibold text-2xl'>{params.slugs}</h1>
       </div>
       <div className='w-full sm:flex flex-row gap-10 py-8'>
         <div className='sm:w-[550px] w-full h-fit'>
