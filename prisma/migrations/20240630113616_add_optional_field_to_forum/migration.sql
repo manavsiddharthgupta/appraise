@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Forum" ALTER COLUMN "tagline" DROP NOT NULL,
+ALTER COLUMN "logo" DROP NOT NULL;

@@ -15,6 +15,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  forums        Forum[]
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -59,3 +60,18 @@ model VerificationToken {
   @@id([identifier, token])
 }
  
+model Forum {
+  id        String   @id @default(cuid())
+  name      String   @db.VarChar(255)
+  tagline   String?  @db.VarChar(255)
+  link      String
+  logo      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([name, link])
+}
