@@ -66,7 +66,8 @@ model Forum {
   tagline   String?  @db.VarChar(255)
   link      String
   logo      String?
-  slug      String
+  slug      String   @unique
+  posts     Post[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -75,4 +76,18 @@ model Forum {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([name, link])
+}
+
+model Post {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  slug        String   @unique
+  upvote      Int      @default(0)
+
+  forumId     String
+  forum       Forum    @relation(fields: [forumId], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

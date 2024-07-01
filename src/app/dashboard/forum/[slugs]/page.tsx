@@ -1,16 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from '@/components/ui/tooltip'
 import { Label } from '@/components/ui/label'
-import { Copy, ExternalLink, LinkIcon, Loader } from 'lucide-react'
+import { LinkIcon, Loader } from 'lucide-react'
 import Link from 'next/link'
 import prisma from '@/lib/db'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
+import ForumLinks from './forum-link'
 
 const getForumDetails = (id: string) => {
   const forums = prisma.forum.findFirst({
@@ -87,27 +82,7 @@ const ForumDetails = async ({ id }: { id: string }) => {
       </div>
       <div className='flex flex-col space-y-1.5 mt-12'>
         <Label>Forum Link</Label>
-        <div className='px-4 py-1.5 border rounded-md bg-accent flex justify-between items-center'>
-          <p className='font-medium'>
-            {process.env.NEXT_PUBLIC_API_URL}/f/{forumDetails.slug}
-          </p>
-          <div className='flex gap-3 items-center'>
-            <ForumTooltip tipContent='Copy link'>
-              <Copy
-                className='cursor-pointer text-foreground/70 hover:text-foreground'
-                strokeWidth={2.5}
-                size={18}
-              />
-            </ForumTooltip>
-            <ForumTooltip tipContent='View Forum'>
-              <ExternalLink
-                className='cursor-pointer text-foreground/70 hover:text-foreground'
-                strokeWidth={2.5}
-                size={18}
-              />
-            </ForumTooltip>
-          </div>
-        </div>
+        <ForumLinks slug={forumDetails?.slug} />
       </div>
     </>
   )
@@ -121,24 +96,5 @@ const ForumPosts = () => {
       </p>
       {/* <div className='block w-full p-6 border border-border rounded-xl shadow-[0_0px_0px_1px_rgba(0,0,0,0.05)]'></div> */}
     </>
-  )
-}
-
-export function ForumTooltip({
-  children,
-  tipContent
-}: {
-  children: React.ReactNode
-  tipContent: string
-}) {
-  return (
-    <TooltipProvider>
-      <Tooltip delayDuration={100}>
-        <TooltipTrigger asChild>{children}</TooltipTrigger>
-        <TooltipContent>
-          <p>{tipContent}</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
   )
 }
