@@ -8,6 +8,9 @@ import type { Metadata, ResolvingMetadata } from 'next'
 import prisma from '@/lib/db'
 import { notFound } from 'next/navigation'
 import CreatePost from './create-post'
+import { Post } from '@prisma/client'
+import { ChevronUp, MessageCircle } from 'lucide-react'
+import { Toggle } from '@/components/ui/toggle'
 
 type Props = {
   params: { slugs: string }
@@ -22,9 +25,11 @@ const getForumDetails = async (slug: string) => {
     select: {
       name: true,
       tagline: true,
-      id: true
+      id: true,
+      posts: true
     }
   })
+
   return forum
 }
 
@@ -36,7 +41,15 @@ export async function generateMetadata(
   const id = params.slugs
 
   // fetch data
-  const forumName = await getForumDetails(id)
+  const forumName = await prisma.forum.findUnique({
+    where: {
+      slug: id
+    },
+    select: {
+      name: true,
+      tagline: true
+    }
+  })
 
   // optionally access and extend (rather than replace) parent metadata
 
@@ -68,10 +81,16 @@ const PublicForumPage = async ({ params }: { params: { slugs: string } }) => {
         </Card>
 
         <div className='h-fit md:w-[calc(100%-448px)] mt-12 md:mt-0 w-full'>
-          <p className='text-sm text-muted-foreground text-center'>
-            No posts yet. Share the Forum with the world.
-          </p>
-          {/* <div className='block w-full p-6 border border-border rounded-xl shadow-[0_0px_0px_1px_rgba(0,0,0,0.05)]'></div> */}
+          {forum?.posts.length === 0 && (
+            <p className='text-sm text-muted-foreground text-center'>
+              No posts yet. Share the Forum with the world.
+            </p>
+          )}
+          <div className='flex flex-col gap-3'>
+            {forum?.posts.map((post) => (
+              <ForumPost post={post} key={post.id} />
+            ))}
+          </div>
         </div>
       </div>
     </main>
@@ -79,3 +98,24 @@ const PublicForumPage = async ({ params }: { params: { slugs: string } }) => {
 }
 
 export default PublicForumPage
+
+const ForumPost = ({ post }: { post: Post }) => {
+  return (
+    <div className='block w-full p-4 border border-border rounded-xl shadow-[0_0px_0px_1px_rgba(0,0,0,0.05)]'>
+      <h1 className='font-medium'>{post.title}</h1>
+      <p className='text-sm'>{post.description}</p>
+      <div className='flex justify-end gap-6 items-center mt-1'>
+        <div className='flex items-center gap-2'>
+          <Toggle variant='outline' className='h-7 rounded-md px-1'>
+            <ChevronUp size={16} />
+          </Toggle>
+          <p className='text-sm'>{post.upvote}</p>
+        </div>
+        <div className='flex items-center gap-1'>
+          <MessageCircle size={18} strokeWidth={1.5} />
+          <p className='text-sm'>{0}</p>
+        </div>
+      </div>
+    </div>
+  )
+}

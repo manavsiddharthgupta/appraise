@@ -5,16 +5,18 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
-import prisma from '@/lib/db'
 import { useState } from 'react'
 import uniqueSlug from 'unique-slug'
 import { Loader } from 'lucide-react'
 import { Post } from '@prisma/client'
+import { useRouter } from 'next/navigation'
 
 const CreatePost = ({ forumId }: { forumId: string }) => {
   const [title, setTitle] = useState<string>('')
   const [description, setDescription] = useState<string>('')
   const [isCreating, setStatus] = useState(false)
+
+  const router = useRouter()
 
   const handleSubmission = async () => {
     if (title.length <= 3) {
@@ -62,6 +64,8 @@ const CreatePost = ({ forumId }: { forumId: string }) => {
       })
       setTitle('')
       setDescription('')
+
+      router.refresh()
     } catch (error) {
       toast('Something went wrong', {
         description: (error as Error).message
