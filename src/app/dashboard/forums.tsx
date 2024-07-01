@@ -3,6 +3,7 @@ import useSWR from 'swr'
 import { MessageCircle } from 'lucide-react'
 import { Forum } from '@prisma/client'
 import { Skeleton } from '@/components/ui/skeleton'
+import Link from 'next/link'
 
 const fetcher = (url: string | URL | Request) =>
   fetch(url).then((r) => r.json())
@@ -59,6 +60,7 @@ const Forums = () => {
           {response?.data?.forums.map((forum) => (
             <ForumCard
               key={forum.id}
+              id={forum.id}
               name={forum.name}
               postsCount={0}
               tagline={forum.tagline}
@@ -94,22 +96,27 @@ const ForumCardSkeleton = () => {
 }
 
 const ForumCard = ({
+  id,
   name,
   tagline,
   postsCount
 }: {
+  id: string
   name: string
   tagline: string | null
   postsCount: number
 }) => {
   return (
-    <div className='lg:w-[49%] w-full border py-2.5 px-4 rounded-md lg:mb-0 mb-2 hover:bg-accent hover:text-accent-foreground cursor-pointer'>
+    <Link
+      className='lg:w-[49%] w-full border py-2.5 px-4 rounded-md lg:mb-0 mb-2 hover:bg-accent hover:text-accent-foreground cursor-pointer'
+      href={`dashboard/forum/${id}`}
+    >
       <h2>{tagline ? name + ' - ' + tagline : name}</h2>
       <div className='flex justify-end mt-1 gap-1 items-center'>
         <MessageCircle size={18} strokeWidth={1.5} />
         <p className='text-sm'>{postsCount}</p>
       </div>
-    </div>
+    </Link>
   )
 }
 

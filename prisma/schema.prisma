@@ -66,6 +66,7 @@ model Forum {
   tagline   String?  @db.VarChar(255)
   link      String
   logo      String?
+  slug      String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

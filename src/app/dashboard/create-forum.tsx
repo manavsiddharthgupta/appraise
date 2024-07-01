@@ -8,6 +8,7 @@ import { toast } from 'sonner'
 import { mutate } from 'swr'
 import { Forum } from '@prisma/client'
 import { Loader } from 'lucide-react'
+import uniqueSlug from 'unique-slug'
 
 const CreateForumForm = () => {
   const [name, setName] = useState<string>('')
@@ -64,6 +65,8 @@ const CreateForumForm = () => {
       return
     }
 
+    const slug = uniqueSlug(name)
+
     setStatus(true)
     try {
       const response = await fetch('/api/forums', {
@@ -71,7 +74,7 @@ const CreateForumForm = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name, tagline, link, logo })
+        body: JSON.stringify({ name, tagline, link, logo, slug })
       })
 
       const data: {

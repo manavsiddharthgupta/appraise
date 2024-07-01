@@ -86,6 +86,7 @@ export async function POST(request: Request) {
         link: data.link,
         tagline: data.tagline,
         logo: data.logo,
+        slug: data.slug,
         userId: user?.id
       }
     })
