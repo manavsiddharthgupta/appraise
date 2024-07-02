@@ -11,6 +11,7 @@ import CreatePost from './create-post'
 import { Post } from '@prisma/client'
 import { ChevronUp, MessageCircle } from 'lucide-react'
 import { Toggle } from '@/components/ui/toggle'
+import Link from 'next/link'
 
 type Props = {
   params: { slugs: string }
@@ -88,7 +89,7 @@ const PublicForumPage = async ({ params }: { params: { slugs: string } }) => {
           )}
           <div className='flex flex-col gap-3'>
             {forum?.posts.map((post) => (
-              <ForumPost post={post} key={post.id} />
+              <ForumPost post={post} forumSlug={params.slugs} key={post.id} />
             ))}
           </div>
         </div>
@@ -99,11 +100,14 @@ const PublicForumPage = async ({ params }: { params: { slugs: string } }) => {
 
 export default PublicForumPage
 
-const ForumPost = ({ post }: { post: Post }) => {
+const ForumPost = ({ post, forumSlug }: { post: Post; forumSlug: string }) => {
   return (
-    <div className='block w-full p-4 border border-border rounded-xl shadow-[0_0px_0px_1px_rgba(0,0,0,0.05)]'>
+    <Link
+      className='block w-full p-4 border border-border rounded-xl shadow-[0_0px_0px_1px_rgba(0,0,0,0.05)]'
+      href={`/f/${forumSlug}/p/${post?.slug}`}
+    >
       <h1 className='font-medium'>{post.title}</h1>
-      <p className='text-sm'>{post.description}</p>
+      <p className='text-sm text-foreground/80'>{post.description}</p>
       <div className='flex justify-end gap-6 items-center mt-1'>
         <div className='flex items-center gap-2'>
           <Toggle variant='outline' className='h-7 rounded-md px-1'>
@@ -116,6 +120,6 @@ const ForumPost = ({ post }: { post: Post }) => {
           <p className='text-sm'>{0}</p>
         </div>
       </div>
-    </div>
+    </Link>
   )
 }

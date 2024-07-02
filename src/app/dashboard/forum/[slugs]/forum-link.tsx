@@ -67,3 +67,23 @@ function ForumTooltip({
     </TooltipProvider>
   )
 }
+
+export const PostLink = ({
+  forumSlug,
+  postSlug
+}: {
+  forumSlug: string
+  postSlug: string
+}) => {
+  const link = `${process.env.NEXT_PUBLIC_API_URL}/f/${forumSlug}/p/${postSlug}`
+  return (
+    <ForumTooltip tipContent='View Post'>
+      <ExternalLink
+        className='cursor-pointer'
+        strokeWidth={1.5}
+        size={18}
+        onClick={() => window.open(link, '_blank')}
+      />
+    </ForumTooltip>
+  )
+}
