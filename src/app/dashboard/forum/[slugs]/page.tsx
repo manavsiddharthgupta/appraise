@@ -52,6 +52,7 @@ export default async function ForumDashboardPage({
               logo={forumDetails?.logo}
               slug={forumDetails?.slug}
               tagline={forumDetails?.tagline}
+              postCount={forumDetails?.posts.length}
             />
           </Suspense>
         </div>
@@ -71,13 +72,15 @@ const ForumDetails = async ({
   tagline,
   logo,
   link,
-  slug
+  slug,
+  postCount
 }: {
   name: string
   tagline: string | null
   logo: string | null
   link: string
   slug: string
+  postCount: number
 }) => {
   return (
     <>
@@ -94,7 +97,7 @@ const ForumDetails = async ({
       </div>
       <div className='flex gap-3 text-sm ml-14 mt-1'>
         <div className='flex gap-1 items-center'>
-          <span className='font-medium'>0</span>
+          <span className='font-medium'>{postCount}</span>
           <span className='text-muted-foreground'>Suggestions</span>
         </div>
         <div>

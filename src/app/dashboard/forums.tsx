@@ -5,6 +5,12 @@ import { Forum } from '@prisma/client'
 import { Skeleton } from '@/components/ui/skeleton'
 import Link from 'next/link'
 
+type Forum_c = {
+  _count: {
+    posts: number
+  }
+} & Forum
+
 const fetcher = (url: string | URL | Request) =>
   fetch(url).then((r) => r.json())
 
@@ -12,7 +18,7 @@ const Forums = () => {
   const { data, error, isLoading } = useSWR('/api/forums', fetcher)
   const response: {
     data?: {
-      forums: Forum[]
+      forums: Forum_c[]
       totalForums: number
     }
     message?: string
@@ -45,6 +51,7 @@ const Forums = () => {
       </OuterCard>
     )
   }
+  console.log(response)
 
   return (
     <OuterCard>
@@ -62,7 +69,7 @@ const Forums = () => {
               key={forum.id}
               id={forum.id}
               name={forum.name}
-              postsCount={0}
+              postsCount={forum._count.posts}
               tagline={forum.tagline}
             />
           ))}
@@ -108,7 +115,7 @@ const ForumCard = ({
 }) => {
   return (
     <Link
-      className='lg:w-[49%] w-full border py-2.5 px-4 rounded-md lg:mb-0 mb-2 hover:bg-accent hover:text-accent-foreground cursor-pointer'
+      className='block lg:w-[49%] w-full border py-2.5 px-4 rounded-md lg:mb-0 mb-2 hover:bg-accent hover:text-accent-foreground cursor-pointer'
       href={`dashboard/forum/${id}`}
     >
       <h2>{tagline ? name + ' - ' + tagline : name}</h2>

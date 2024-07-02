@@ -20,6 +20,13 @@ export async function GET() {
         user: {
           email: email
         }
+      },
+      include: {
+        _count: {
+          select: {
+            posts: true
+          }
+        }
       }
     })
 
