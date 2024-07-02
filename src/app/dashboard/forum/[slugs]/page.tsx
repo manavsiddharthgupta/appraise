@@ -20,7 +20,20 @@ const getForumDetails = (id: string) => {
       logo: true,
       slug: true,
       tagline: true,
-      posts: true
+      posts: {
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          slug: true,
+          _count: {
+            select: {
+              comments: true,
+              upvotes: true
+            }
+          }
+        }
+      }
     }
   })
 
@@ -124,7 +137,16 @@ const ForumPosts = ({
   posts,
   forumSlug
 }: {
-  posts: Post[]
+  posts: {
+    id: string
+    slug: string
+    _count: {
+      comments: number
+      upvotes: number
+    }
+    title: string
+    description: string
+  }[]
   forumSlug: string
 }) => {
   return (
@@ -143,7 +165,22 @@ const ForumPosts = ({
   )
 }
 
-const ForumPost = ({ post, forumSlug }: { post: Post; forumSlug: string }) => {
+const ForumPost = ({
+  post,
+  forumSlug
+}: {
+  post: {
+    id: string
+    slug: string
+    _count: {
+      comments: number
+      upvotes: number
+    }
+    title: string
+    description: string
+  }
+  forumSlug: string
+}) => {
   return (
     <div className='block w-full p-4 border border-border rounded-xl shadow-[0_0px_0px_1px_rgba(0,0,0,0.05)]'>
       <h1 className='font-medium'>{post.title}</h1>
@@ -154,11 +191,11 @@ const ForumPost = ({ post, forumSlug }: { post: Post; forumSlug: string }) => {
           <div className='h-7 flex items-center rounded-md px-1 border border-border'>
             <ChevronUp size={16} />
           </div>
-          <p className='text-sm'>{post.upvote}</p>
+          <p className='text-sm'>{post?._count.upvotes}</p>
         </div>
         <div className='flex items-center gap-1'>
           <MessageCircle size={18} strokeWidth={1.5} />
-          <p className='text-sm'>{0}</p>
+          <p className='text-sm'>{post?._count.comments}</p>
         </div>
       </div>
     </div>

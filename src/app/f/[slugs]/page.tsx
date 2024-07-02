@@ -27,7 +27,16 @@ const getForumDetails = async (slug: string) => {
       name: true,
       tagline: true,
       id: true,
-      posts: true
+      posts: {
+        include: {
+          _count: {
+            select: {
+              comments: true,
+              upvotes: true
+            }
+          }
+        }
+      }
     }
   })
 
@@ -100,7 +109,18 @@ const PublicForumPage = async ({ params }: { params: { slugs: string } }) => {
 
 export default PublicForumPage
 
-const ForumPost = ({ post, forumSlug }: { post: Post; forumSlug: string }) => {
+const ForumPost = ({
+  post,
+  forumSlug
+}: {
+  post: Post & {
+    _count: {
+      comments: number
+      upvotes: number
+    }
+  }
+  forumSlug: string
+}) => {
   return (
     <Link
       className='block w-full p-4 border border-border rounded-xl shadow-[0_0px_0px_1px_rgba(0,0,0,0.05)]'
@@ -113,11 +133,11 @@ const ForumPost = ({ post, forumSlug }: { post: Post; forumSlug: string }) => {
           <Toggle variant='outline' className='h-7 rounded-md px-1'>
             <ChevronUp size={16} />
           </Toggle>
-          <p className='text-sm'>{post.upvote}</p>
+          <p className='text-sm'>{post._count.upvotes}</p>
         </div>
         <div className='flex items-center gap-1'>
           <MessageCircle size={18} strokeWidth={1.5} />
-          <p className='text-sm'>{0}</p>
+          <p className='text-sm'>{post._count.comments}</p>
         </div>
       </div>
     </Link>

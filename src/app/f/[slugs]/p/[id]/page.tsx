@@ -1,10 +1,11 @@
 import { ChevronUp, Dot, Undo2 } from 'lucide-react'
 import { Toggle } from '@/components/ui/toggle'
 import type { Metadata, ResolvingMetadata } from 'next'
-import { Textarea } from '@/components/ui/textarea'
 import BackBtn from '@/components/back-btn'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { notFound } from 'next/navigation'
+import prisma from '@/lib/db'
+import PostComment from './post-comment'
 
 type Props = {
   params: { id: string; slugs: string }
@@ -17,11 +18,35 @@ const getPostDetails = async (slug: string) => {
       slug
     },
     select: {
+      id: true,
       title: true,
       description: true,
       createdAt: true,
       slug: true,
-      upvote: true,
+      _count: {
+        select: {
+          upvotes: true
+        }
+      },
+      user: {
+        select: {
+          name: true,
+          image: true
+        }
+      },
+      comments: {
+        select: {
+          content: true,
+          id: true,
+          createdAt: true,
+          user: {
+            select: {
+              name: true,
+              image: true
+            }
+          }
+        }
+      },
       forum: {
         select: {
           name: true,
@@ -88,7 +113,7 @@ const PostsPage = async ({
               className='flex flex-col h-16 py-1 rounded-xl'
             >
               <ChevronUp size={22} />
-              <span className='text-lg'>{post?.upvote}</span>
+              <span className='text-lg'>{post?._count.upvotes}</span>
             </Toggle>
             <div className='flex flex-col space-y-4'>
               <div className='flex gap-2 flex-col'>
@@ -97,16 +122,32 @@ const PostsPage = async ({
                 </h2>
                 <p>{post?.description}</p>
               </div>
-              <UserProfile dateCreated={post?.createdAt} />
+              <UserProfile
+                userImage={post?.user?.image}
+                userName={post?.user?.name}
+                dateCreated={post?.createdAt}
+              />
             </div>
           </div>
         </div>
         <div className='sm:w-[calc(100%-550px)] w-full sm:mt-0 mt-4'>
-          <Textarea id='comment' placeholder='Leave a comment' rows={2} />
-          <div className='mt-10 gap-8 flex flex-col'>
-            <p className='text-sm text-muted-foreground mx-auto'>
+          <PostComment postId={post?.id} />
+          {post?.comments.length === 0 && (
+            <p className='text-sm mt-10 text-muted-foreground mx-auto'>
               No comment yet.
             </p>
+          )}
+          <div className='mt-10 gap-8 flex flex-col'>
+            {post?.comments.map((comment) => {
+              return (
+                <Comment
+                  content={comment?.content}
+                  createdAt={comment?.createdAt}
+                  user={comment?.user}
+                  key={comment.id}
+                />
+              )
+            })}
           </div>
         </div>
       </div>
@@ -116,11 +157,26 @@ const PostsPage = async ({
 
 export default PostsPage
 
-const Comment = () => {
+const Comment = ({
+  content,
+  createdAt,
+  user
+}: {
+  createdAt: Date
+  user: {
+    name: string | null
+    image: string | null
+  } | null
+  content: string
+}) => {
   return (
     <div className='w-full space-y-1'>
-      {/* <UserProfile /> */}
-      <p className='text-foreground/80 text-sm'>comment 1</p>
+      <UserProfile
+        dateCreated={createdAt}
+        userImage={user?.image}
+        userName={user?.name}
+      />
+      <p className='text-foreground/80 text-sm'>{content}</p>
     </div>
   )
 }
@@ -130,14 +186,14 @@ const UserProfile = ({
   userImage,
   dateCreated
 }: {
-  userName?: string
-  userImage?: string
+  userName?: string | null
+  userImage?: string | null | undefined
   dateCreated: Date
 }) => {
   return (
     <div className='flex gap-2 items-center'>
       <Avatar className='h-6 w-6'>
-        <AvatarImage src={userImage} alt='@forums' />
+        <AvatarImage src={userImage || ''} alt='@forums' />
         <AvatarFallback className='capitalize'>{'A'}</AvatarFallback>
       </Avatar>
       <div className='flex items-center'>

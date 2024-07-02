@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../auth/[...nextauth]/route'
-import { Post } from '@prisma/client'
+import { Comment } from '@prisma/client'
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions)
@@ -17,28 +17,26 @@ export async function POST(request: Request) {
     })
     userId = user?.id ?? null
   }
-  const data: Post = await request.json()
+  const data: Comment = await request.json()
 
   try {
-    const res = await prisma.post.create({
+    const res = await prisma.comment.create({
       data: {
-        title: data.title,
-        description: data.description,
-        slug: data.slug,
-        forumId: data.forumId,
+        content: data.content,
+        postId: data.postId,
         userId: userId
       }
     })
 
     return Response.json({
       ok: true,
-      data: { post: res },
+      data: { comment: res },
       status: 200
     })
   } catch (error) {
     return Response.json({
       ok: false,
-      message: 'An error occurred while creating the post.',
+      message: 'An error occurred while creating the comment.',
       status: 500
     })
   }
