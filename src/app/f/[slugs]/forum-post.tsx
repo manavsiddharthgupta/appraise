@@ -2,7 +2,9 @@
 
 import { Post } from '@prisma/client'
 import { ChevronUp, MessageCircle } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
 const ForumPost = ({
@@ -17,6 +19,9 @@ const ForumPost = ({
   }
   forumSlug: string
 }) => {
+  const { status } = useSession()
+  const router = useRouter()
+
   return (
     <Link
       className='block w-full p-4 border border-border rounded-xl shadow-[0_0px_0px_1px_rgba(0,0,0,0.05)]'
@@ -29,6 +34,16 @@ const ForumPost = ({
           <div
             onClick={(e) => {
               e.preventDefault()
+              if (status === 'unauthenticated') {
+                toast('Post cannot get upvotes', {
+                  description: 'You are not logged in.',
+                  action: {
+                    label: 'Log in',
+                    onClick: () => router.push('/auth/signin')
+                  }
+                })
+                return
+              }
               toast('Feature Coming Soon', {
                 description: 'We are working hard to bring you this feature.'
               })

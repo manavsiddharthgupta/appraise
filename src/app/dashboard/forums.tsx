@@ -51,7 +51,6 @@ const Forums = () => {
       </OuterCard>
     )
   }
-  console.log(response)
 
   return (
     <OuterCard>

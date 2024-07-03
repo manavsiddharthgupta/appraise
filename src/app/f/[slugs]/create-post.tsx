@@ -4,17 +4,20 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { toast } from 'sonner'
 import { useState } from 'react'
 import uniqueSlug from 'unique-slug'
-import { Loader } from 'lucide-react'
+import { Loader, TriangleAlert } from 'lucide-react'
 import { Post } from '@prisma/client'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 const CreatePost = ({ forumId }: { forumId: string }) => {
   const [title, setTitle] = useState<string>('')
   const [description, setDescription] = useState<string>('')
   const [isCreating, setStatus] = useState(false)
+  const { status } = useSession()
 
   const router = useRouter()
 
@@ -54,7 +57,6 @@ const CreatePost = ({ forumId }: { forumId: string }) => {
         status: number
       } = await response.json()
 
-      console.log(data)
       if (!data.ok) {
         throw new Error('Failed to create forum.')
       }
@@ -100,6 +102,7 @@ const CreatePost = ({ forumId }: { forumId: string }) => {
             </div>
           </div>
         </form>
+        {status === 'unauthenticated' && <UnauthenticationAlert />}
       </CardContent>
       <CardFooter>
         <Button
@@ -116,3 +119,17 @@ const CreatePost = ({ forumId }: { forumId: string }) => {
 }
 
 export default CreatePost
+
+export function UnauthenticationAlert() {
+  return (
+    <Alert className='mt-4'>
+      <TriangleAlert className='h-5 w-5' color='#f97316' />
+      <AlertTitle className='text-sm font-medium'>
+        You are not logged in!
+      </AlertTitle>
+      <AlertDescription className='text-sm'>
+        The post will be created as anonymous.
+      </AlertDescription>
+    </Alert>
+  )
+}

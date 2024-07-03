@@ -6,12 +6,15 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Loader } from 'lucide-react'
 import { Comment } from '@prisma/client'
+import { UnauthenticationAlert } from '../../create-post'
+import { useSession } from 'next-auth/react'
 
 const PostComment = ({ postId }: { postId: string }) => {
   const [comment, setComment] = useState<string>('')
   const [isCreating, setStatus] = useState(false)
 
   const router = useRouter()
+  const { status } = useSession()
 
   const handleSubmission = async () => {
     if (comment.length <= 5) {
@@ -40,7 +43,6 @@ const PostComment = ({ postId }: { postId: string }) => {
         status: number
       } = await response.json()
 
-      console.log(data)
       if (!data.ok) {
         throw new Error('Failed to add comment.')
       }
@@ -67,6 +69,7 @@ const PostComment = ({ postId }: { postId: string }) => {
         onChange={(e) => setComment(e.target.value)}
         rows={2}
       />
+      {status === 'unauthenticated' && <UnauthenticationAlert />}
       <Button
         className='w-full'
         onClick={handleSubmission}

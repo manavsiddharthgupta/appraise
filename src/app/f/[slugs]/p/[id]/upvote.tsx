@@ -2,12 +2,27 @@
 
 import { ChevronUp } from 'lucide-react'
 import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 const UpvoteUi = ({ upvotes }: { upvotes: number }) => {
+  const { status } = useSession()
+  const router = useRouter()
+
   return (
     <div
       onClick={(e) => {
         e.preventDefault()
+        if (status === 'unauthenticated') {
+          toast('Post cannot get upvotes', {
+            description: 'You are not logged in.',
+            action: {
+              label: 'Log in',
+              onClick: () => router.push('/auth/signin')
+            }
+          })
+          return
+        }
         toast('Feature Coming Soon', {
           description: 'We are working hard to bring you this feature.'
         })

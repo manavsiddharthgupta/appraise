@@ -24,7 +24,7 @@ const ForumLinks = ({ slug }: { slug: string }) => {
 
   return (
     <div className='px-4 py-1.5 border rounded-md bg-accent flex justify-between items-center'>
-      <p className='font-medium'>{link}</p>
+      <p className='font-medium truncate'>{link}</p>
       <div className='flex gap-3 items-center'>
         <ForumTooltip tipContent='Copy link'>
           <Copy

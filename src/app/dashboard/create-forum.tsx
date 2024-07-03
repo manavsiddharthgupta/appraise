@@ -41,7 +41,6 @@ const CreateForumForm = () => {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log('Hello')
     e.preventDefault()
 
     if (!name || !link) {
@@ -86,7 +85,6 @@ const CreateForumForm = () => {
         status: number
       } = await response.json()
 
-      console.log(data)
       if (!data.ok) {
         throw new Error('Failed to create forum.')
       }
