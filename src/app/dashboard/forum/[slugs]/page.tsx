@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Label } from '@/components/ui/label'
-import { ChevronUp, LinkIcon, Loader, MessageCircle } from 'lucide-react'
+import { ChevronUp, Link2Icon, Loader, MessageCircle } from 'lucide-react'
 import Link from 'next/link'
 import prisma from '@/lib/db'
 import { notFound } from 'next/navigation'
@@ -120,8 +120,8 @@ const ForumDetails = async ({
             as={link}
             target='_blank'
           >
-            <LinkIcon size={12} strokeWidth={3} />
-            <span className='text-muted-foreground'>Link</span>
+            <Link2Icon size={16} strokeWidth={2.5} />
+            <span className='text-muted-foreground'>Website</span>
           </Link>
         </div>
       </div>

@@ -1,11 +1,11 @@
-import { ChevronUp, Dot, Undo2 } from 'lucide-react'
-import { Toggle } from '@/components/ui/toggle'
+import { Dot, Undo2 } from 'lucide-react'
 import type { Metadata, ResolvingMetadata } from 'next'
 import BackBtn from '@/components/back-btn'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { notFound } from 'next/navigation'
 import prisma from '@/lib/db'
 import PostComment from './post-comment'
+import UpvoteUi from './upvote'
 
 type Props = {
   params: { id: string; slugs: string }
@@ -108,13 +108,7 @@ const PostsPage = async ({
       <div className='w-full sm:flex flex-row gap-10 py-8'>
         <div className='sm:w-[510px] w-full h-fit'>
           <div className='flex gap-8 py-2'>
-            <Toggle
-              variant='outline'
-              className='flex flex-col h-16 py-1 rounded-xl'
-            >
-              <ChevronUp size={22} />
-              <span className='text-lg'>{post?._count.upvotes}</span>
-            </Toggle>
+            <UpvoteUi upvotes={post?._count.upvotes} />
             <div className='flex flex-col space-y-4'>
               <div className='flex gap-2 flex-col'>
                 <h2 className='capitalize font-semibold text-xl'>

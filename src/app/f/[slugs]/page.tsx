@@ -8,10 +8,7 @@ import type { Metadata, ResolvingMetadata } from 'next'
 import prisma from '@/lib/db'
 import { notFound } from 'next/navigation'
 import CreatePost from './create-post'
-import { Post } from '@prisma/client'
-import { ChevronUp, MessageCircle } from 'lucide-react'
-import { Toggle } from '@/components/ui/toggle'
-import Link from 'next/link'
+import ForumPost from './forum-post'
 
 type Props = {
   params: { slugs: string }
@@ -108,38 +105,3 @@ const PublicForumPage = async ({ params }: { params: { slugs: string } }) => {
 }
 
 export default PublicForumPage
-
-const ForumPost = ({
-  post,
-  forumSlug
-}: {
-  post: Post & {
-    _count: {
-      comments: number
-      upvotes: number
-    }
-  }
-  forumSlug: string
-}) => {
-  return (
-    <Link
-      className='block w-full p-4 border border-border rounded-xl shadow-[0_0px_0px_1px_rgba(0,0,0,0.05)]'
-      href={`/f/${forumSlug}/p/${post?.slug}`}
-    >
-      <h1 className='font-medium'>{post.title}</h1>
-      <p className='text-sm text-foreground/80'>{post.description}</p>
-      <div className='flex justify-end gap-6 items-center mt-1'>
-        <div className='flex items-center gap-2'>
-          <Toggle variant='outline' className='h-7 rounded-md px-1'>
-            <ChevronUp size={16} />
-          </Toggle>
-          <p className='text-sm'>{post._count.upvotes}</p>
-        </div>
-        <div className='flex items-center gap-1'>
-          <MessageCircle size={18} strokeWidth={1.5} />
-          <p className='text-sm'>{post._count.comments}</p>
-        </div>
-      </div>
-    </Link>
-  )
-}
