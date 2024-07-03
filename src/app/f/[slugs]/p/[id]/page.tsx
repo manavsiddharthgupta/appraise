@@ -3,7 +3,7 @@ import type { Metadata, ResolvingMetadata } from 'next'
 import BackBtn from '@/components/back-btn'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { notFound } from 'next/navigation'
-import prisma from '@/lib/db'
+import { db } from '@/lib/db'
 import PostComment from './post-comment'
 import UpvoteUi from './upvote'
 
@@ -13,7 +13,7 @@ type Props = {
 }
 
 const getPostDetails = async (slug: string) => {
-  const post = await prisma.post.findUnique({
+  const post = await db.post.findUnique({
     where: {
       slug
     },
@@ -66,7 +66,7 @@ export async function generateMetadata(
   const id = params.id
   // fetch data
 
-  const postName = await prisma.post.findUnique({
+  const postName = await db.post.findUnique({
     where: {
       slug: id
     },

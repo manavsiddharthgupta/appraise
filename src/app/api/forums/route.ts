@@ -1,6 +1,6 @@
-import prisma from '@/lib/db'
+import { db } from '@/lib/db'
 import { getServerSession } from 'next-auth'
-import { authOptions } from '../auth/[...nextauth]/route'
+import { authOptions } from '@/utils/authoption'
 import { Forum } from '@prisma/client'
 
 export async function GET() {
@@ -15,7 +15,7 @@ export async function GET() {
   }
 
   try {
-    const forums = await prisma.forum.findMany({
+    const forums = await db.forum.findMany({
       where: {
         user: {
           email: email
@@ -30,7 +30,7 @@ export async function GET() {
       }
     })
 
-    const count = await prisma.forum.count({
+    const count = await db.forum.count({
       where: {
         user: {
           email: email
@@ -70,7 +70,7 @@ export async function POST(request: Request) {
   const data: Forum = await request.json()
 
   try {
-    const user = await prisma.user.findFirst({
+    const user = await db.user.findFirst({
       where: {
         email: email
       },
@@ -87,7 +87,7 @@ export async function POST(request: Request) {
       })
     }
 
-    const res = await prisma.forum.create({
+    const res = await db.forum.create({
       data: {
         name: data.name,
         link: data.link,

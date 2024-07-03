@@ -1,13 +1,14 @@
 import { getServerSession } from 'next-auth'
-import { authOptions } from '../auth/[...nextauth]/route'
+import { authOptions } from '@/utils/authoption'
 import { Post } from '@prisma/client'
+import { db } from '@/lib/db'
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions)
   const email = session?.user?.email
   let userId: string | null = null
   if (email) {
-    const user = await prisma.user.findFirst({
+    const user = await db.user.findFirst({
       where: {
         email: email
       },
@@ -20,7 +21,7 @@ export async function POST(request: Request) {
   const data: Post = await request.json()
 
   try {
-    const res = await prisma.post.create({
+    const res = await db.post.create({
       data: {
         title: data.title,
         description: data.description,

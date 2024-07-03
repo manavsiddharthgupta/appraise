@@ -2,14 +2,13 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Label } from '@/components/ui/label'
 import { ChevronUp, Link2Icon, Loader, MessageCircle } from 'lucide-react'
 import Link from 'next/link'
-import prisma from '@/lib/db'
+import { db } from '@/lib/db'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import ForumLinks, { PostLink } from './forum-link'
-import { Post } from '@prisma/client'
 
 const getForumDetails = (id: string) => {
-  const forums = prisma.forum.findUnique({
+  const forums = db.forum.findUnique({
     where: {
       id
     },

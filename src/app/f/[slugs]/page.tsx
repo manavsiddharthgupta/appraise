@@ -5,7 +5,7 @@ import {
   CardDescription
 } from '@/components/ui/card'
 import type { Metadata, ResolvingMetadata } from 'next'
-import prisma from '@/lib/db'
+import { db } from '@/lib/db'
 import { notFound } from 'next/navigation'
 import CreatePost from './create-post'
 import ForumPost from './forum-post'
@@ -16,7 +16,7 @@ type Props = {
 }
 
 const getForumDetails = async (slug: string) => {
-  const forum = await prisma.forum.findUnique({
+  const forum = await db.forum.findUnique({
     where: {
       slug
     },
@@ -48,7 +48,7 @@ export async function generateMetadata(
   const id = params.slugs
 
   // fetch data
-  const forumName = await prisma.forum.findUnique({
+  const forumName = await db.forum.findUnique({
     where: {
       slug: id
     },
