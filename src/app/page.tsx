@@ -7,19 +7,19 @@ export default function Home() {
   const users = [
     {
       url: 'https://i.pravatar.cc/150?u=a042581f4e29026024d',
-      alt: '@shadcn'
+      alt: '@shadcni'
     },
     {
       url: 'https://i.pravatar.cc/150?u=a04258114e29026702d',
-      alt: '@shadcn2'
+      alt: '@shadcn2i'
     },
     {
       url: 'https://i.pravatar.cc/150?u=a04258a2462d826712d',
-      alt: '@shadcn3'
+      alt: '@shadcn3i'
     },
     {
       url: 'https://i.pravatar.cc/150?u=a04258114e29026708c',
-      alt: '@shadcn4'
+      alt: '@shadcn4i'
     }
   ]
   return (
