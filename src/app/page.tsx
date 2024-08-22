@@ -19,7 +19,7 @@ export default function Home() {
     },
     {
       url: 'https://i.pravatar.cc/150?u=a04258114e29026708c',
-      alt: '@shadcn4-1'
+      alt: '@shadcn4'
     }
   ]
   return (
